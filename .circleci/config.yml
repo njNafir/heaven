@@ -9,8 +9,8 @@ workflows:
   run-filter:
     jobs:
       - path-filtering/filter:
-          # Compare files on master
-          base-revision: master
+          # Compare files on main
+          base-revision: main
           # 3-column space-separated table for mapping; `path-to-test parameter-to-set value-for-parameter` for each row
           mapping: |
             frontend/.* run-frontend true
