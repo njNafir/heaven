@@ -1,0 +1,59 @@
+version: 2.1
+orbs:
+  node: circleci/node@5.1.0     # Used for the Frontend tests
+
+parameters:
+  run-frontend:
+    type: boolean
+    default: false
+  run-backend:
+    type: boolean
+    default: false
+
+jobs:
+  frontend-test:
+    executor: node/default
+    steps:
+      - checkout
+      - node/install-packages:
+          pkg-manager: yarn
+      - run:
+          command: yarn test
+          name: Run tests
+      - run:
+          command: yarn build
+          name: Build app
+      - persist_to_workspace:
+          root: ~/project
+          paths:
+            - .
+
+  backend-test:
+    docker:
+      - image: circleci/python:3.10
+    steps:
+      - checkout
+      - restore_cache:
+          key: deps1-{{ .Branch }}-{{ checksum "requirements.txt" }}
+      - run:
+          command: |
+            python3 -m venv venv
+            . venv/bin/activate
+            pip install -r requirements.txt
+      - save_cache:
+          key: deps1-{{ .Branch }}-{{ checksum "requirements.txt" }}
+          paths:
+            - "venv"
+      - store_artifacts:
+          path: test-reports/
+          destination: python_app
+
+workflows:
+  frontend:
+    when: << pipeline.parameters.run-frontend >>
+    jobs:
+      - frontend-test
+  backend-test:
+    when: << pipeline.parameters.run-backend >>
+    jobs:
+      - backend-test
