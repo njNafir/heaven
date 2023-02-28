@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'testapp',
+    'channels',
     'chat'
 ]
 
@@ -69,13 +70,12 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'djangoserver.wsgi.application'
+ASGI_APPLICATION = "djangoserver.asgi.application"
 
-ASGI_APPLICATION = "chat.routing.application" #routing.py will handle the ASGI
 CHANNEL_LAYERS = {
     'default': {
         'BACKEND': "channels.layers.InMemoryChannelLayer"
-        }
+    }
 }
 
 # Database
