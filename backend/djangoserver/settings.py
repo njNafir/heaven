@@ -69,7 +69,7 @@ TEMPLATES = [
     },
 ]
 
-# WSGI_APPLICATION = 'djangoserver.wsgi.application'
+WSGI_APPLICATION = 'djangoserver.wsgi.application'
 
 ASGI_APPLICATION = "chat.routing.application" #routing.py will handle the ASGI
 CHANNEL_LAYERS = {
