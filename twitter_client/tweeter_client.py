@@ -7,11 +7,11 @@ import json
 
 load_dotenv()
 
-ws = create_connection("ws://localhost:8088")
+ws = create_connection(os.environ["WEBSOCKET_SERVER_URL"])
 
-auth = tweepy.OAuthHandler(os.getenv("API_KEY"), os.getenv("API_SECRET_KEY"))
-auth.set_access_token(os.getenv("ACCESS_TOKEN"),
-                      os.getenv("ACCESS_TOKEN_SECRET"))
+auth = tweepy.OAuthHandler(os.environ["TWITTER_API_KEY"], os.environ["TWITTER_API_SECRET_KEY"])
+auth.set_access_token(os.environ["TWITTER_ACCESS_TOKEN"],
+                      os.environ["TWITTER_ACCESS_TOKEN_SECRET"])
 api = tweepy.API(auth)
 
 class TwitterListener(tweepy.StreamListener):
