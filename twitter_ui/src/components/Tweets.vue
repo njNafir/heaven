@@ -31,7 +31,7 @@ export default {
     };
   },
   mounted() {
-    this.connection = new WebSocket("ws://localhost:8088");
+    this.connection = new WebSocket(process.env.VUE_APP_WEBSOCKET_SERVER_URL);
     this.connection.onmessage = event => {
       if (this.tweets.length >= 20) {
         this.tweets.pop();
