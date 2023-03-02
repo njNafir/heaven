@@ -1,11 +1,17 @@
 import json
+from typing import Any
 from asgiref.sync import async_to_sync
 from channels.generic.websocket import WebsocketConsumer
 
 
 class TextRoomConsumer(WebsocketConsumer):
+    def __init__(self):
+        super().__init__()
+
+        self.room_name = None
+        self.room_group_name = None
+
     def connect(self):
-        print(self.scope['url_route'])
         self.room_name = self.scope['url_route']['kwargs']['room_name']
         self.room_group_name = 'chat_%s' % self.room_name
         # Join room group
@@ -22,7 +28,7 @@ class TextRoomConsumer(WebsocketConsumer):
             self.channel_name
         )
 
-    def receive(self, text_data):
+    def receive(self, text_data: Any = None, bytes_data: Any = None):
         # Receive message from WebSocket
         text_data_json = json.loads(text_data)
         text = text_data_json['text']
